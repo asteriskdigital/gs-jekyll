@@ -1,0 +1,96 @@
+---
+layout: default
+---
+
+<ul class="list mh5 pl0 cf mw8 ba bb-0 b--light-silver">
+{% for post in site.sherlock %}
+
+    <li class="pa3 pa4-ns bb b--light-silver">
+    <span class="b db f3 mb1">
+        <a href="#" class="near-black no-underline link dim">{{post.title}}</a>
+    </span>
+    <span class="db f4 mv2 mid-gray">
+        {{post.authors}}
+    </span>
+    <span class="db f6 mv2 mid-gray">
+        {{post.date}}
+    </span>
+    </li>
+{% endfor %}
+
+</ul>
+
+        <div class="mw8 center">
+          <nav class="cf pa3 pa4-ns" data-name="pagination-numbers">
+            <a class="fl dib link dim black f6 f5-ns b pa2" href="#" title="Previous">&larr; Previous</a>
+            <a class="fr dib link dim black f6 f5-ns b pa2" href="#" title="Next">Next &rarr;</a>
+        
+            <div class="overflow-hidden center db tc">
+              <a class="dib link dim white bg-dark-green br2 f6 f5-ns b pa2" href="#" title="1">1</a>
+              <a class="dib link dim black             f6 f5-ns b pa2" href="#" title="2">2</a>
+              <a class="dib link dim black             f6 f5-ns b pa2" href="#" title="3">3</a>
+              <a class="dib link dim black             f6 f5-ns b pa2" href="#" title="4">4</a>
+              <a class="dib link dim black             f6 f5-ns b pa2" href="#" title="5">5</a>
+            </div>
+          </nav>
+        </div>
+
+Begin pagination: 
+{% for c in site.sherlock %}x
+    [{{ c.title }} / {{ page.title }}]
+    {% if c.title == page.title %}
+    {% assign thisPost = c %}
+    {% if forloop.index == 1 %}
+        {% assign prevflag = 0 %}
+        {% assign nextflag = 1 %}
+    {% elsif forloop.index == forloop.length %}
+        {% assign prevflag = 1 %}
+        {% assign nextflag = 0 %}
+    {% else %}
+        {% assign prevflag = 1 %}
+        {% assign nextflag = 1 %}
+    {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% for c in site.sherlock %}
+{% if c.title == page.title %}
+    {% assign prevflag = 0 %}
+{% endif %}
+{% if prevflag == 1 %}
+    {% assign prevPost = c %}
+    {% assign page.previous = c %}
+{% endif %}
+{% endfor %}
+
+{% if nextflag == 1 %}
+{% for c in site.sherlock %}
+    {% if foundPost == 1 %}
+    {% assign getNext = 1 %}
+    {% endif %}
+    {% if c.title == page.title %}
+    {% assign foundPost = 1 %}
+    {% endif %}
+    {% if getNext == 1%}
+    {% assign nextPost = c %}
+    {% assign page.next = c %}
+    {% assign foundPost = 0 %}
+    {% assign getNext = 0 %}
+    {% endif %}
+{% endfor %}
+{% endif %}
+
+<div id="post-nav">
+    {% if prevPost.url %}
+    <a class="prev" rel="prev" href="{{ prevPost.url }}">
+        <span>&lt; {{ prevPost.title }}</span>
+    </a>
+    {% endif %}
+    {% if nextPost.url %}
+    <a class="next" rel="next" href="{{ nextPost.url }}">
+        <span>{{ nextPost.title }} &gt;</span>
+    </a>
+    {% endif %}
+</div>
+
+End Pagination
